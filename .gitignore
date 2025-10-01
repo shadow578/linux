@@ -182,3 +182,7 @@ sphinx_*/
 
 # Rust analyzer configuration
 /rust-project.json
+
+
+# dev: include .config to track changes to it
+!.config
