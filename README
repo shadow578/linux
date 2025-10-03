@@ -29,9 +29,12 @@ current state:
   * [ ] full GBE?
 - [ ] AR8035 Ethernet Phy working (WAN)
   * [ ] full GBE?
-- [ ] I2C and attached devices (EEPROM, RTC, TPM) working
+- [X] I2C working
+  * [X] RTC -> time is set automatically from hw clock
+  * [X] TPM -> /dev/tpm0 present, idk how to test
+  * [ ] EEPROM -> ??
 - [ ] MX25u3235f SPI flash working and readable
-
+- [ ] front panel (LEDs, reset button) controllable
 
 ---
 
