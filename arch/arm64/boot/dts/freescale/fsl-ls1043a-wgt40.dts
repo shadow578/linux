@@ -166,62 +166,78 @@
 
 #include "fsl-ls1043-post.dtsi"
 
-&enet0 {
-	phy-handle = <&phy_port1>;
-	phy-connection-type = "rgmii-id";
-};
-
-&enet1 {
-	phy-handle = <&phy_port2>;
-	phy-connection-type = "rgmii-id";
-};
-
-&enet2 {
-	phy-handle = <&phy_port3>;
-	phy-connection-type = "rgmii-id";
-};
-
-&enet3 {
-	status = "disabled";
-};
-
-&enet4 {
-	phy-handle = <&phy_port4>;
-	phy-connection-type = "rgmii-id";
-};
-
-&enet5 {
-	phy-handle = <&phy_port5>;
-	phy-connection-type = "rgmii-id";
-};
-
-&enet6 {
-	status = "disabled";
-};
-
-&mdio0 {
-	phy_port1: ethernet-phy@1 {
-		reg = <0x1>;
+// -- from fsl-ls1043a-rdb.dts
+&fman0 {
+	ethernet@e0000 {
+		phy-handle = <&qsgmii_phy1>;
+		phy-connection-type = "qsgmii";
 	};
 
-	phy_port2: ethernet-phy@2 {
-		reg = <0x2>;
+	ethernet@e2000 {
+		phy-handle = <&qsgmii_phy2>;
+		phy-connection-type = "qsgmii";
 	};
 
-	phy_port4: ethernet-phy@3 {
-		reg = <0x4>;
+	ethernet@e4000 {
+		phy-handle = <&rgmii_phy1>;
+		phy-connection-type = "rgmii-id";
 	};
 
-	phy_port5: ethernet-phy@4 {
-		reg = <0x5>;
+	ethernet@e6000 {
+		phy-handle = <&rgmii_phy2>;
+		phy-connection-type = "rgmii-id";
+	};
+
+	ethernet@e8000 {
+		phy-handle = <&qsgmii_phy3>;
+		phy-connection-type = "qsgmii";
+	};
+
+	ethernet@ea000 {
+		phy-handle = <&qsgmii_phy4>;
+		phy-connection-type = "qsgmii";
+	};
+
+	ethernet@f0000 { /* 10GEC1 */
+		phy-handle = <&aqr105_phy>;
+		phy-connection-type = "xgmii";
+	};
+
+	mdio@fc000 {
+		rgmii_phy1: ethernet-phy@1 {
+			reg = <0x1>;
+		};
+
+		rgmii_phy2: ethernet-phy@2 {
+			reg = <0x2>;
+		};
+
+		qsgmii_phy1: ethernet-phy@4 {
+			reg = <0x4>;
+		};
+
+		qsgmii_phy2: ethernet-phy@5 {
+			reg = <0x5>;
+		};
+
+		qsgmii_phy3: ethernet-phy@6 {
+			reg = <0x6>;
+		};
+
+		qsgmii_phy4: ethernet-phy@7 {
+			reg = <0x7>;
+		};
+	};
+
+	mdio@fd000 {
+		aqr105_phy: ethernet-phy@1 {
+			compatible = "ethernet-phy-ieee802.3-c45";
+			interrupts = <0 132 4>;
+			reg = <0x1>;
+		};
 	};
 };
-
-&xmdio0 {
-	phy_port3: ethernet-phy@1 {
-		reg = <0x1>;
-	};
-};
+// -- end
 
 &uqe {
 	ucc_hdlc: ucc@2000 {

@@ -19,6 +19,20 @@ NOTE: this is just a test, not a complete solution.
 expect things to miss and not work correctly.
 
 
+current state:
+
+- [X] generally boots okay, uart console works and boots without crashing
+- [X] usb is working and enumerating as expected (what a pain that was)
+- [X] SATA ssd is detected and can be mounted
+- [X] thermal sensors work (some broken ones still get listed alongside the real ones)
+- [X] 88E1545 QUAD Ethernet Phy working (LAN1-4)
+  * [ ] full GBE?
+- [ ] AR8035 Ethernet Phy working (WAN)
+  * [ ] full GBE?
+- [ ] I2C and attached devices (EEPROM, RTC, TPM) working
+- [ ] MX25u3235f SPI flash working and readable
+
+
 ---
 
 Linux kernel
