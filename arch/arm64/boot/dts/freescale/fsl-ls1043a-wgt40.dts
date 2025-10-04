@@ -167,52 +167,44 @@
 
 #include "fsl-ls1043-post.dtsi"
 
-// -- from fsl-ls1043a-rdb.dts
 &fman0 {
-	ethernet@e0000 {
+	ethernet@e0000 { /* LAN1 */
 		phy-handle = <&qsgmii_phy1>;
 		phy-connection-type = "qsgmii";
 	};
 
-	ethernet@e2000 {
+	ethernet@e2000 { /* LAN2 */
 		phy-handle = <&qsgmii_phy2>;
 		phy-connection-type = "qsgmii";
 	};
 
-	ethernet@e4000 {
-		phy-handle = <&rgmii_phy1>;
-		phy-connection-type = "rgmii-id";
+	ethernet@e4000 { // end2
+		status = "disabled";
 	};
 
 	ethernet@e6000 {
-		phy-handle = <&rgmii_phy2>;
-		phy-connection-type = "rgmii-id";
+		status = "disabled";
 	};
 
-	ethernet@e8000 {
+	ethernet@e8000 { /* LAN3 */
 		phy-handle = <&qsgmii_phy3>;
 		phy-connection-type = "qsgmii";
 	};
 
-	ethernet@ea000 {
+	ethernet@ea000 { /* LAN4 */
 		phy-handle = <&qsgmii_phy4>;
 		phy-connection-type = "qsgmii";
 	};
 
-	ethernet@f0000 { /* 10GEC1 */
-		phy-handle = <&aqr105_phy>;
-		phy-connection-type = "xgmii";
+	ethernet@f0000 {
+		status = "disabled";
+	};
+
+	ethernet@f2000 {
+		status = "disabled";
 	};
 
 	mdio@fc000 {
-		rgmii_phy1: ethernet-phy@1 {
-			reg = <0x1>;
-		};
-
-		rgmii_phy2: ethernet-phy@2 {
-			reg = <0x2>;
-		};
-
 		qsgmii_phy1: ethernet-phy@4 {
 			reg = <0x4>;
 		};
@@ -229,16 +221,7 @@
 			reg = <0x7>;
 		};
 	};
-
-	mdio@fd000 {
-		aqr105_phy: ethernet-phy@1 {
-			compatible = "ethernet-phy-ieee802.3-c45";
-			interrupts = <0 132 4>;
-			reg = <0x1>;
-		};
-	};
 };
-// -- end
 
 &uqe {
 	ucc_hdlc: ucc@2000 {
