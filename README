@@ -28,13 +28,16 @@ current state:
 - [X] 88E1545 QUAD Ethernet Phy working (LAN1-4)
   * [ ] full GBE?
 - [ ] AR8035 Ethernet Phy working (WAN)
+  * -> Link is detected, but `Err FD status = 0x00080000`
   * [ ] full GBE?
 - [X] I2C working
   * [X] RTC -> time is set automatically from hw clock
   * [X] TPM -> /dev/tpm0 present, idk how to test
   * [ ] EEPROM -> ??
 - [X] MX25u3235f SPI flash working and readable
-- [ ] front panel (LEDs, reset button) controllable
+- [X] front panel (LEDs, reset button) controllable (via sysfs gpio)
+- [ ] set cpu clock to 1.6GHz (?)
+
 
 ---
 

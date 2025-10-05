@@ -180,6 +180,7 @@
 
 	ethernet@e4000 { /* WAN */
 		phy-handle = <&wan1_phy>;
+		pcsphy-handle = <&wan1_phy>;
 		phy-connection-type = "rgmii-id";
 	};
 
@@ -226,6 +227,9 @@
 	mdio@fd000 {
 		wan1_phy: ethernet-phy@1 {
 			reg = <0x01>;
+			
+			qca,clk-out-frequency = <125000000>;
+      qca,enable-pll-clk-out;
 		};
 	};
 };
