@@ -169,17 +169,18 @@
 
 &fman0 {
 	ethernet@e0000 { /* LAN1 */
-		phy-handle = <&qsgmii_phy1>;
+		phy-handle = <&lan1_phy>;
 		phy-connection-type = "qsgmii";
 	};
 
 	ethernet@e2000 { /* LAN2 */
-		phy-handle = <&qsgmii_phy2>;
+		phy-handle = <&lan2_phy>;
 		phy-connection-type = "qsgmii";
 	};
 
-	ethernet@e4000 { // end2
-		status = "disabled";
+	ethernet@e4000 { /* WAN */
+		phy-handle = <&wan1_phy>;
+		phy-connection-type = "rgmii-id";
 	};
 
 	ethernet@e6000 {
@@ -187,12 +188,12 @@
 	};
 
 	ethernet@e8000 { /* LAN3 */
-		phy-handle = <&qsgmii_phy3>;
+		phy-handle = <&lan3_phy>;
 		phy-connection-type = "qsgmii";
 	};
 
 	ethernet@ea000 { /* LAN4 */
-		phy-handle = <&qsgmii_phy4>;
+		phy-handle = <&lan4_phy>;
 		phy-connection-type = "qsgmii";
 	};
 
@@ -205,20 +206,26 @@
 	};
 
 	mdio@fc000 {
-		qsgmii_phy1: ethernet-phy@4 {
+		lan1_phy: ethernet-phy@4 {
 			reg = <0x4>;
 		};
 
-		qsgmii_phy2: ethernet-phy@5 {
+		lan2_phy: ethernet-phy@5 {
 			reg = <0x5>;
 		};
 
-		qsgmii_phy3: ethernet-phy@6 {
+		lan3_phy: ethernet-phy@6 {
 			reg = <0x6>;
 		};
 
-		qsgmii_phy4: ethernet-phy@7 {
+		lan4_phy: ethernet-phy@7 {
 			reg = <0x7>;
+		};
+	};
+
+	mdio@fd000 {
+		wan1_phy: ethernet-phy@1 {
+			reg = <0x01>;
 		};
 	};
 };
