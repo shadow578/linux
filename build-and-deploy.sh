@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "Checking if sde1 target disk is present"
 if [ ! -b /dev/sde1 ]; then
     echo "Error: /dev/sde1 not found. Please insert the USB drive or mount using usbipd."
