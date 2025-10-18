@@ -24,16 +24,14 @@
   status = "okay";
   scl-gpios = <&gpio3 12 0>;
 
-  tpm@29 {
-    compatible = "atmel,tpm_i2c_atmel";
-    reg = <0x29>;
-  };
+  //tpm@29 {
+  //  compatible = "atmel,tpm_i2c_atmel";
+  //  reg = <0x29>;
+  //};
 };
 
 &i2c1 {
   status = "okay";
-
-  // drop scl-gpios ?
 
   // PD69104B1 PoE Controller
   poe@20 {
@@ -57,7 +55,7 @@
       reg = <0>;
 
       rtc@68 {
-        compatible = "pericom,pt7c4338";
+        compatible = "pericom,pt7c4338", "dallas,ds1307";
         reg = <0x68>;
       };
     };
@@ -72,6 +70,26 @@
         reg = <0x2d>;
       };
     };
+
+		i2c@2 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <2>;
+
+			// near RTC IC 
+			exhaust_temp@4a {
+				compatible = "ti,tmp175";
+				reg = <0x4a>;
+				sensor-name = "exhaust_temperature";
+			};
+
+			// near SSD
+			intake_temp@4b {
+				compatible = "ti,tmp175";
+				reg = <0x4b>;
+				sensor-name = "intake_temperature";
+			};			
+		};
   };
 };
 

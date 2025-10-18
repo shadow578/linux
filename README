@@ -27,10 +27,11 @@ current state:
 - [ ] 88E6190 Ethernet Switch working
   * [ ] individual ports accessible (DSA)?
   * [ ] full GBE?
-- [ ] I2C working
-  * [ ] RTC
-  * [ ] PoE Controller
-  * [ ] HW Monitor
+- [X] I2C working
+  * [X] RTC
+  * [ ] PoE Controller -> visible, but no driver
+  * [X] HW Monitor
+  * [X] (2x) TMP175 temperature sensors
 - [X] MX25U3235F SPI flash working and readable
 - [ ] front panel (LEDs, reset button) controllable
 
