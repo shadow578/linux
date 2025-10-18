@@ -35,7 +35,9 @@ current state:
   * [ ] EEPROM -> ??
 - [X] MX25u3235f SPI flash working and readable
 - [X] front panel (LEDs, reset button) controllable (via sysfs gpio)
-- [ ] set cpu clock to 1.6GHz (?)
+
+
+for details, see [here](https://shadow578.github.io/2025/10/03/linux-on-a-watchguard-t40/).
 
 
 ---
