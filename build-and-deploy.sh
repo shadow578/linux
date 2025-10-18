@@ -24,16 +24,16 @@ echo "Mounting USB drive t80usb"
 sudo mount /dev/sde1 /mnt/t80usb/
 
 echo "Deploying kernel and device tree blobs to t80usb"
-sudo rm /mnt/t80usb/boot/linux-mainline-69/*
-sudo cp arch/arm64/boot/dts/freescale/fsl-ls1043a-*.dtb /mnt/t80usb/boot/linux-mainline-69/
-sudo cp arch/arm64/boot/Image /mnt/t80usb/boot/linux-mainline-69/
+sudo rm /mnt/t80usb/boot/linux-mainline-t80/*
+sudo cp arch/arm64/boot/dts/freescale/fsl-ls1046a-*.dtb /mnt/t80usb/boot/linux-mainline-t80/
+sudo cp arch/arm64/boot/Image /mnt/t80usb/boot/linux-mainline-t80/
 
 echo "Deploying modules to t80usb"
 sudo make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} INSTALL_MOD_PATH=/mnt/t80usb modules_install
 
 echo ""
-echo "--- Contents of /mnt/t80usb/boot/linux-mainline-69/ ---"
-ls -l /mnt/t80usb/boot/linux-mainline-69/
+echo "--- Contents of /mnt/t80usb/boot/linux-mainline-t80/ ---"
+ls -l /mnt/t80usb/boot/linux-mainline-t80/
 echo "---"
 echo ""
 

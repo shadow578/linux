@@ -1,0 +1,201 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+
+/dts-v1/;
+
+#include "fsl-ls1046a.dtsi"
+
+/ {
+	model = "WatchGuard FireBox T80";
+	compatible = "watchguard,firebox-t80", "fsl,ls1046a-rdb", "fsl,ls1046a";
+
+	aliases {
+		serial0 = &duart0;
+		serial1 = &duart1;
+		serial2 = &duart2;
+		serial3 = &duart3;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+};
+
+&i2c0 {
+  status = "okay";
+  scl-gpios = <&gpio3 12 0>;
+
+  tpm@29 {
+    compatible = "atmel,tpm_i2c_atmel";
+    reg = <0x29>;
+  };
+};
+
+&i2c1 {
+  status = "okay";
+
+  // drop scl-gpios ?
+
+  // PD69104B1 PoE Controller
+  poe@20 {
+    compatible = "poe,poe_i2c_microsemi";
+    reg = <0x20>;
+  };
+};
+
+&i2c3 {
+  status = "okay";
+
+  i2c_mux@71 {
+    compatible = "nxp,pca9548";
+    reg = <0x71>;
+    #address-cells = <1>;
+    #size-cells = <0>;
+
+    i2c@0 {
+      #address-cells = <1>;
+      #size-cells = <0>;
+      reg = <0>;
+
+      rtc@68 {
+        compatible = "pericom,pt7c4338";
+        reg = <0x68>;
+      };
+    };
+
+    i2c@1 {
+      #address-cells = <1>;
+      #size-cells = <0>;
+      reg = <1>;
+
+      hwmon@2d {
+        compatible = "nuvoton,nct7904";
+        reg = <0x2d>;
+      };
+    };
+  };
+};
+
+&qspi {
+	status = "okay";
+	bus-num = <0>;
+	big-endian;
+
+	qflash0: flash@0 {
+		compatible = "mxic,mx25u3235f", "jedec,spi-nor";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		spi-max-frequency = <50000000>;
+		spi-rx-bus-width = <4>;
+		spi-tx-bus-width = <4>;
+		reg = <0>;
+
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+			partition@0 {
+				reg = <0x00 0x100000>;
+				label = "rcw+pbi";
+				read-only;
+			};
+
+			partition@100000 {
+				reg = <0x100000 0x100000>;
+				label = "u-boot";
+				read-only;
+			};
+
+			partition@200000 {
+				reg = <0x200000 0x10000>;
+				label = "empty-1";
+			};
+
+			partition@210000 {
+				reg = <0x210000 0x10000>;
+				label = "u-boot-env";
+				read-only;
+			};
+
+			partition@220000 {
+				reg = <0x220000 0x20000>;
+				label = "fman ucode";
+				read-only;
+			};
+
+			partition@240000 {
+				reg = <0x240000 0x40000>;
+				label = "empty-2-ppa";
+				read-only;
+			};
+
+			partition@280000 {
+				reg = <0x280000 0x20000>;
+				label = "wg-cfg0";
+				read-only;
+			};
+
+			partition@2a0000 {
+				reg = <0x2a0000 0x20000>;
+				label = "wg-cfg1";
+				read-only;
+			};
+
+			partition@2c0000 {
+				reg = <0x2c0000 0x20000>;
+				label = "wg-mfg";
+				read-only;
+			};
+
+			partition@2e0000 {
+				reg = <0x2e0000 0x20000>;
+				label = "empty-3";
+				read-only;
+			};
+
+			partition@300000 {
+				reg = <0x300000 0x20000>;
+				label = "fman-ucode-old";
+				read-only;
+			};
+
+			partition@320000 {
+				reg = <0x320000 0xe0000>;
+				label = "wg-bootopt";
+				read-only;
+			};
+		};
+	};
+};
+
+&duart0 {
+	status = "okay";
+};
+
+&usb0 {
+  status = "okay";
+  snps,dis-u1u2-when-u3-quirk;
+};
+
+&usb1 {
+  status = "okay";
+  snps,dis-u1u2-when-u3-quirk;
+};
+
+&usb2 {
+  status = "okay";
+  snps,dis-u1u2-when-u3-quirk;
+};
+
+
+#include "fsl-ls1046-post.dtsi"
+
+// WG T80 does not support secure boot, so remove OP-TEE
+// not doing this will cause kernel panic at boot
+/delete-node/ &{/firmware/optee};
+
+// for some reason, usb enumeration stops working if 
+// soc is marked dma-coherent
+&soc {
+    /delete-property/ dma-coherent;
+};
