@@ -210,30 +210,34 @@
 &pcsphy6 {
 	compatible = "ethernet-phy-ieee802.3-c45";
 	backplane-mode = "10gbase-kr";
-	//fsl,lane-handle = ???
-	//fsl,lane-reg = ???
 };
 
 &pcsphy7 {
 	compatible = "ethernet-phy-ieee802.3-c45";
 	backplane-mode = "10gbase-kr";
-	//fsl,lane-handle = ???
-	//fsl,lane-reg = ???
 };
 
 &fman0 {
 	// backplane port 0, via pcsphy6
 	swcpu0_port: ethernet@f0000 {
-		fixed-link = <0 1 1000 0 0>;
 		phy-connection-type = "sgmii-2500";
-		phy-mode = "sgmii-2500";
+		phy-mode = "sgmii";
+
+		fixed-link {
+			speed = <2500>;
+			full-duplex;
+		};
 	};
 
 	// backplane port 1, via pcsphy7
 	swcpu1_port: ethernet@f2000 {
-		fixed-link = <0 1 1000 0 0>;
 		phy-connection-type = "sgmii-2500";
-		phy-mode = "sgmii-2500";
+		phy-mode = "sgmii";
+
+		fixed-link {
+			speed = <2500>;
+			full-duplex;
+		};
 	};
 
 	// DSA switch

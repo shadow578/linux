@@ -24,8 +24,9 @@ current state:
 - [?] generally boots okay, uart console works and boots without crashing
 - [X] SATA ssd is detected and can be mounted
 - [X] thermal sensors work
-- [X] 88E6190 Ethernet Switch working (except LAN6/7)
-  * [ ] individual ports accessible (DSA)?
+- [X] 88E6190 Ethernet Switch working
+  * [X] individual ports accessible (DSA)?
+  * [ ] both backplane connections utilized?
   * [ ] full GBE?
 - [X] I2C working
   * [X] RTC
