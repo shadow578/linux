@@ -205,8 +205,170 @@
   snps,dis-u1u2-when-u3-quirk;
 };
 
-
 #include "fsl-ls1046-post.dtsi"
+
+&pcsphy6 {
+	compatible = "ethernet-phy-ieee802.3-c45";
+	backplane-mode = "10gbase-kr";
+	//fsl,lane-handle = ???
+	//fsl,lane-reg = ???
+};
+
+&pcsphy7 {
+	compatible = "ethernet-phy-ieee802.3-c45";
+	backplane-mode = "10gbase-kr";
+	//fsl,lane-handle = ???
+	//fsl,lane-reg = ???
+};
+
+&fman0 {
+	// backplane port 0
+	swcpu0_port: ethernet@f0000 {
+		//fixed-link = <0x00 0x01 0x3e8 0x00 0x00>;
+		phy-connection-type = "sgmii-2500";
+		phy-mode = "sgmii-2500";
+	};
+
+	// backplane port 1
+	swcpu1_port: ethernet@f2000 {
+		//fixed-link = <0x00 0x01 0x3e8 0x00 0x00>;
+		phy-connection-type = "sgmii-2500";
+		phy-mode = "sgmii-2500";
+	};
+
+	// DSA switch
+	mdio@fc000 {
+		cpu-phy0@9 {
+			reg = <9>;
+		};
+
+		cpu-phy1@10 {
+			reg = <10>;
+		};
+
+		switch-phy0@1{
+			reg = <1>;
+		};
+
+		switch-phy1@2{
+			reg = <2>;
+		};
+
+		switch-phy2@3{
+			reg = <3>;
+		};
+
+		switch-phy3@4{
+			reg = <4>;
+		};
+
+		switch-phy4@5{
+			reg = <5>;
+		};
+
+		switch-phy5@6{
+			reg = <6>;
+		};
+
+		switch-phy6@7{
+			reg = <7>;
+		};
+
+		switch-phy7@8{
+			reg = <8>;
+		};
+
+		switch@0 {
+			compatible = "marvell,mv88e6190";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <0>;
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				swcpu0: port@9 {
+					reg = <9>;
+					label = "cpu0";
+					ethernet = <&swcpu0_port>;
+					phy-mode = "2500base-x";
+
+					fixed-link {
+						speed = <2500>;
+						full-duplex;
+					};
+				};
+
+				swcpu1: port@10 {
+					reg = <10>;
+					label = "cpu1";
+					ethernet = <&swcpu1_port>;
+					phy-mode = "2500base-x";
+
+					fixed-link {
+						speed = <2500>;
+						full-duplex;
+					};
+				};
+
+				port@0 {
+					reg = <0>;
+					label = "lan0";
+					status = "disabled"; // ???
+				};
+
+				port@1 {
+					reg = <1>;
+					label = "wan0";
+					cpu = <&swcpu0>;
+				};
+
+				port@2 {
+					reg = <2>;
+					label = "lan1";
+					cpu = <&swcpu0>;
+				};
+
+				port@3 {
+					reg = <3>;
+					label = "lan2";
+					cpu = <&swcpu0>;
+				};
+
+				port@4 {
+					reg = <4>;
+					label = "lan3";
+					cpu = <&swcpu0>;
+				};
+
+				port@5 {
+					reg = <5>;
+					label = "lan4";
+					cpu = <&swcpu1>;
+				};
+
+				port@6 {
+					reg = <6>;
+					label = "lan5";
+					cpu = <&swcpu1>;
+				};
+
+				port@7 {
+					reg = <7>;
+					label = "lan6";
+					cpu = <&swcpu1>;
+				};
+
+				port@8 {
+					reg = <8>;
+					label = "lan7";
+					cpu = <&swcpu1>;
+				};
+			};
+		};
+	};
+};
 
 // WG T80 does not support secure boot, so remove OP-TEE
 // not doing this will cause kernel panic at boot
