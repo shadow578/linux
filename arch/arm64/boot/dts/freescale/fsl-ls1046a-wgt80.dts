@@ -222,16 +222,16 @@
 };
 
 &fman0 {
-	// backplane port 0
+	// backplane port 0, via pcsphy6
 	swcpu0_port: ethernet@f0000 {
-		//fixed-link = <0x00 0x01 0x3e8 0x00 0x00>;
+		fixed-link = <0 1 1000 0 0>;
 		phy-connection-type = "sgmii-2500";
 		phy-mode = "sgmii-2500";
 	};
 
-	// backplane port 1
+	// backplane port 1, via pcsphy7
 	swcpu1_port: ethernet@f2000 {
-		//fixed-link = <0x00 0x01 0x3e8 0x00 0x00>;
+		fixed-link = <0 1 1000 0 0>;
 		phy-connection-type = "sgmii-2500";
 		phy-mode = "sgmii-2500";
 	};
@@ -310,12 +310,6 @@
 						speed = <2500>;
 						full-duplex;
 					};
-				};
-
-				port@0 {
-					reg = <0>;
-					label = "lan0";
-					status = "disabled"; // ???
 				};
 
 				port@1 {
