@@ -35,8 +35,7 @@ current state:
   * [X] (2x) TMP175 temperature sensors
 - [X] MX25U3235F SPI flash working and readable
 - [X] front panel (LEDs, reset button) controllable
-  * (via sysfs)
-  * (GPIOs 535 (button), 537 (status), 538 (mode), 539 (failover), 540 (attn))
+  * (via sysfs gpio-leds and gpio-keys)
 - [ ] PCIe slot working
 
 

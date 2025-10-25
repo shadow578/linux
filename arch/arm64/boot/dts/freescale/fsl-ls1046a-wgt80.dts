@@ -3,6 +3,8 @@
 /dts-v1/;
 
 #include "fsl-ls1046a.dtsi"
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/leds/common.h>
 
 / {
 	model = "WatchGuard FireBox T80";
@@ -17,6 +19,80 @@
 
 	chosen {
 		stdout-path = "serial0:115200n8";
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		power-led {
+			label = "power";
+			gpios = <&gpio0 24 GPIO_ACTIVE_LOW>;
+			default-state = "on";
+		};
+
+		status-led {
+			label = "status";
+			gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+			linux,default-trigger = "heartbeat";
+		};
+
+		mode-led {
+			label = "mode";
+			gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+
+		failover-led {
+			label = "failover";
+			gpios = <&gpio0 27 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+
+		attention-led {
+			label = "attention";
+			gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+			panic-indicator;
+		};
+
+		//module1-led {
+		//	label = "module1";
+		//	gpios = <&gpio1 0 GPIO_ACTIVE_HIGH>;
+		//	default-state = "off";
+		//};
+
+		//module2-led {
+		//	label = "module2";
+		//	gpios = <&gpio1 1 GPIO_ACTIVE_HIGH>;
+		//	default-state = "off";
+		//};
+
+		// "A" LED on front panel
+		module3-led {
+			label = "module:red";
+			gpios = <&gpio1 2 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		module4-led {
+			label = "module:green";
+			gpios = <&gpio1 3 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};	
+	};
+
+	keys {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		reset-button {
+			label = "reset";
+			gpios = <&gpio0 23 GPIO_ACTIVE_LOW>;
+			debounce-interval = <50>;
+			linux,code = <KEY_RESTART>;
+		};
 	};
 };
 
