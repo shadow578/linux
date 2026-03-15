@@ -1,0 +1,12 @@
+[Unit]
+Description=Turn off all LEDs but ATTN early in system boot
+Before=basic.target
+After=local-fs.target sysinit.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/bin/frontpanel -all +attention
+
+[Install]
+WantedBy=basic.target

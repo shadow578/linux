@@ -1,0 +1,11 @@
+[Unit]
+Description=Turn off ATTN LED after network comes online
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/frontpanel -attention
+
+[Install]
+WantedBy=multi-user.target

@@ -26,9 +26,9 @@ current state:
 - [X] SATA ssd is detected and can be mounted
 - [X] thermal sensors work (some broken ones still get listed alongside the real ones)
 - [X] 88E1545 QUAD Ethernet Phy working (LAN1-4)
-  * [ ] full GBE?
+  * [X] full GBE?
 - [X] AR8035 Ethernet Phy working (WAN)
-  * [ ] full GBE?
+  * [X] full GBE?
 - [X] I2C working
   * [X] RTC -> time is set automatically from hw clock
   * [X] TPM -> /dev/tpm0 present, idk how to test
@@ -38,6 +38,88 @@ current state:
 
 
 for details, see [here](https://shadow578.github.io/2025/10/03/linux-on-a-watchguard-t40/).
+
+---
+
+## Arch Linux ARM installation
+
+to install arch linux ARM64, follow these steps:
+
+- prepare usb stick with ext4 partition:
+  - fdisk /dev/sdx
+  - g # new partition table
+  - n # new partition
+  - 1 # partition number 1
+  - <enter> # first sector = full disk
+  - <enter> # last sector = full disk
+  - w # write changes
+  - mkfs.ext4 /dev/sdx1
+- download generic arm64 arch from https://archlinuxarm.org/platforms/armv8/generic and extract to ext4 formatted usb drive as per instructions
+- convert initramfs to uImage: 
+  - mkimage -A arm -O linux -T ramdisk -C none -n "initramfs" -d boot/initramfs-linux.img boot/initramfs-linux.uImage
+- run build-and-deploy.sh from linux fork (wgt40 branch) to deploy kernel, dtb and kernel modules to the usb drive
+- boot from usb using u-boot command line below, then login as root
+- format internal ssd and create a single ext4 partition on it (see usb stick prep above)
+- mount internal ssd and copy contents of usb drive to it
+  - mkdir /mnt/ssd && mkdir /mnt/usb 
+  - mount /dev/sda1 /mnt/ssd
+  - mount /dev/sdb1 /mnt/usb
+  - cp -a /mnt/usb/* /mnt/ssd/
+  - alternativ: dd if=/dev/sdb1 of=/dev/sda1 bs=4M status=progress
+- after first ssd boot, init pacman keyring as per guide
+- prevent automatic kernel changes updates, add "IgnorePkg = linux*" to /etc/pacman.conf
+- add initramfs regenerate hook
+
+### u-boot command line for usb boot
+
+```
+usb start
+env set kernel_addr_r 0x80080000
+env set fdt_addr_r 0x90000000
+env set ramdisk_addr_r 0x94000000
+load usb 0:1 ${kernel_addr_r} /boot/Image.wgt40
+load usb 0:1 ${fdt_addr_r} /boot/fsl-ls1043a-wgt40.dtb
+load usb 0:1 ${ramdisk_addr_r} /boot/initramfs-linux.uImage
+env set bootargs console=ttyS0,115200 earlycon=uart8250,mmio,0x21c0500 root=/dev/sdb1 rw rootwait
+booti ${kernel_addr_r} ${ramdisk_addr_r} ${fdt_addr_r}
+```
+
+### u-boot command line for scsi boot
+
+install (SysA setup to boot arch, SysB dumps to u-boot console)
+```
+env set kernel_addr_r 0x80080000
+env set fdt_addr_r 0x90000000
+env set ramdisk_addr_r 0x94000000
+env set boot_linux "<boot command here>"
+env set wgBootSysA "run boot_linux"
+env set wgBootSysB "true"
+env set bootdelay 3
+env save
+reset
+```
+
+boot command (replace newlines with "; " for install)
+```
+echo "Booting..."
+74lv164 high
+scsi scan
+74lv164 qb 0
+load scsi 0:1 ${kernel_addr_r} /boot/Image.wgt40
+74lv164 qc 0
+load scsi 0:1 ${fdt_addr_r} /boot/fsl-ls1043a-wgt40.dtb
+74lv164 qd 0
+load scsi 0:1 ${ramdisk_addr_r} /boot/initramfs-linux.uImage
+74lv164 qa 0
+env set bootargs console=ttyS0,115200 earlycon=uart8250,mmio,0x21c0500 root=/dev/sda1 rw rootwait
+booti ${kernel_addr_r} ${ramdisk_addr_r} ${fdt_addr_r}
+```
+
+
+### Front Panel CLI
+
+a tool for interacting with the front panel is included in _wg-t40/frontpanel.py.
+sample services to use ATTN led for bootup status are included as well.
 
 
 ---
